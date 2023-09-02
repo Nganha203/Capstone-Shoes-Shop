@@ -22,9 +22,6 @@ export default function Detail() {
 
   }, [param.productID])
 
-
-  console.log(productItem)
-
   return (
     <div >
       <div style={{ display: 'flex' }}>
