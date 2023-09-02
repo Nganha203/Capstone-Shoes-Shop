@@ -1,6 +1,9 @@
 import React, { useRef } from 'react';
-import { Carousel } from 'antd';
-import { CarouselRef } from 'antd/es/carousel';
+import { Carousel, Button } from 'antd';
+import { CarouselRef } from 'antd/es/carousel'; 
+import css from './carousel.module.scss'
+import NextIcon from 'src/assets/icons/next.icon';
+import PreviousIcon from 'src/assets/icons/previous.icon';
 
 const contentStyle: React.CSSProperties = {
     margin: 'auto',
@@ -28,24 +31,30 @@ const HomeCarousel: React.FC = () => {
     }
 
     return (
-        <div >
-            <button onClick={handlePrev}>Previous</button>
-            <button onClick={handleNext}>Next</button>
-            <Carousel ref={refCarousel} autoplay={true} afterChange={onChange}>
-                <div>
-                    <img style={contentStyle} src="https://lienquan.garena.vn/files/skin/6ee0ca6c7839effd7b244bbe29f50a9e5d256414a590a.jpg" />
-                </div>
-                <div>
-                    <img style={contentStyle} src="https://kenh14cdn.com/thumb_w/600/2020/6/23/photo-1-15929095917691763068776-crop-15929114397871248100140.jpg" />
-                </div>
-                <div>
-                    <img style={contentStyle} src="https://lvgames.net/lqm/wp-content/uploads/2023/05/hinh-anh-nen-aov-x-sao-kirito-va-asuna-lien-quan-mobile-29-5-lvgames.net_.jpg" alt="" />
-                </div>
-                <div>
-                    <img style={contentStyle} src="https://lvgames.net/lqm/wp-content/uploads/2020/09/hinh_nen_ngo_khong_dac_vu_bang_hau_680x382.jpg" alt="" />
-                    
-                </div>
-            </Carousel>
+        <div className={css['home-carousel']}>
+            <div className={css['carousel-img']}>
+                <Carousel ref={refCarousel} autoplay={true} afterChange={onChange}>
+                    <div className={css['slice-1']}>
+                        <img style={contentStyle} src="https://brand.assets.adidas.com/image/upload/f_auto,q_auto,fl_lossy/if_w_gt_1920,w_1920/enCA/Images/ub10-mh-lg-m-d_tcm185-1056604.jpg" />
+                    </div>
+                    <div>
+                        <img style={contentStyle} src="https://e0.pxfuel.com/wallpapers/529/641/desktop-wallpaper-air-jordans-work-in-progress-air-jordans-jordan-shoes-hype-shoes-red-jordan-shoes.jpg" />
+                    </div>
+                    <div>
+                        <img style={contentStyle} src="https://www.converse.com/on/demandware.static/-/Library-Sites-ConverseEU01SharedLibrary/default/dw190bc329/firstspirit/converse-uk/media/homepage_1/2023_fall/desktop_33/D-Converse-Search-Page-Shop-FA23-P3.jpg" alt="" />
+                    </div>
+                    <div>
+                        <img style={contentStyle} src="https://p4.wallpaperbetter.com/wallpaper/149/909/314/running-shoes-sports-4k-wallpaper-preview.jpg" alt="" />
+
+                    </div>
+                </Carousel>
+            </div>
+            <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                <button style={{border : 'none', backgroundColor: 'white', color: 'green'}} onClick={handlePrev}><NextIcon ></NextIcon></button>
+                <button style={{border : 'none', backgroundColor: 'white'}} onClick={handleNext}><PreviousIcon></PreviousIcon> </button>
+            </div>
+
+
         </div>
     );
 };
