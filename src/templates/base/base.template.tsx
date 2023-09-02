@@ -1,4 +1,4 @@
-import React, { Fragment, Suspense } from 'react'
+import React, {  Suspense } from 'react'
 import { Outlet } from 'react-router-dom'
 import Header from './header'
 import Footer from './footer'

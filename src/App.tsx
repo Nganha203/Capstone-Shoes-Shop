@@ -5,12 +5,16 @@ import GlobalStyle from "./components/global/global"
 // as để đổi tên
 import { Provider as ReduxProvider } from "react-redux"
 import { store } from "./redux/store"
+import  {CartProvider} from "./components/context/cartContext"
 
 function App() {
   return (
     <ReduxProvider store={store}>
       <GlobalStyle> 
-      <RouterProvider router={router}></RouterProvider>
+        <CartProvider>
+          <RouterProvider router={router}></RouterProvider>
+        </CartProvider>
+      
     </GlobalStyle>
     </ReduxProvider>
     
