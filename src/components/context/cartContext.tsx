@@ -3,12 +3,12 @@ import { IProduct } from 'src/pages/detail/detail.type';
 
 interface CartContextType {
   cartQuantity: number;
+  cartQuantityDetail: number;
   cartItems: IProduct[];
-  size: string
   addToCart: (item: IProduct) => void;
   updateCartItemQuantity: (productId: number, change: number) => void;
+  updateQuantityDetail: (productId: number, change: number) => void;
   remove: (productId: number) => void;
-  sizeShoes: (size: string) => void
 }
 interface CartProviderProps {
   children: ReactNode;
@@ -27,16 +27,11 @@ export const useCartContext = () => {
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   const [cartQuantity, setCartQuantity] = useState(0);
   const [cartItems, setCartItem] = useState<IProduct[]>([])
-  const [size, setSize] = useState('')
-
-  const sizeShoes = (sizeChoose: string) =>{
-    setSize(sizeChoose)
-  }
+  const [cartQuantityDetail, setCartQuantityDetail] = useState(1);
 
   // ADD SP
   const addToCart = (item: IProduct) => {
-    setCartQuantity(cartQuantity + 1);
-
+   
     const existingItemIndex = cartItems.findIndex(cartItem => cartItem.id === item.id)
 
     if (existingItemIndex !== -1) {
@@ -45,11 +40,11 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
       setCartItem(updatedCartItems);
 
     } else {
-      setCartItem([...cartItems, { ...item, quantity: 1 }]);
+      setCartItem([...cartItems, { ...item, quantity: cartQuantityDetail }]);
     }
 
   };
-  // Cập nhật số lượng sản phẩm khi nhấn nút tăng giảm
+  // Cập nhật số lượng sản phẩm khi nhấn nút tăng giảm trong CARTS
   const updateCartItemQuantity = (idProduct: number, currentQuantity: number) => {
     const updatedCartItems = cartItems.map((item) => {
       if (idProduct === item.id) {
@@ -62,6 +57,22 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     setCartItem(updatedCartItems);
     setCartQuantity(cartQuantity + currentQuantity);
   }
+
+  // Cập nhật số lượng sản phẩm khi nhấn nút tăng giảm trong DETAIL
+  const updateQuantityDetail = (idProduct: number, currentQuantity: number) => {
+    const updatedCartItems = cartItems.map((item) => {
+      if (idProduct === item.id) {
+        const newQuantity = item.quantity + currentQuantity
+        return { ...item, quantity: newQuantity }
+      }
+      return item
+    })
+      
+    setCartItem(updatedCartItems);
+    setCartQuantityDetail(cartQuantityDetail + currentQuantity);
+  }
+
+
   // Remove 
   const remove = (idProduct: number) => {
     const newCart = cartItems.filter((sp) => sp.id !== idProduct)
@@ -72,12 +83,13 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
 
   const contextValue: CartContextType = {
     cartQuantity,
+    cartQuantityDetail,
     cartItems,
-    size,
     addToCart,
     updateCartItemQuantity,
+    updateQuantityDetail,
     remove,
-    sizeShoes,
+  
   };
 
   return (

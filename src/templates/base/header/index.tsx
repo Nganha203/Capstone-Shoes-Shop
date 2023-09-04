@@ -6,7 +6,8 @@ import logoImg from 'src/assets/imgs/logo.png'
 import { useCartContext } from 'src/components/context/cartContext'
 
 export default function Header() {
-  const { cartQuantity } = useCartContext();
+  const {cartItems, cartQuantity, cartQuantityDetail } = useCartContext();
+  const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
   return (
     <>
       <header className={css.header}>
@@ -20,7 +21,7 @@ export default function Header() {
           </div>
           <div className={css['icon-cart']}>
             <Link to='/carts'><IconCart /></Link>
-            <span>({cartQuantity})</span>
+            <span>({totalQuantity})</span>
           </div>
           <div className={css['author']}>
             <Link to='/login'>Login</Link>

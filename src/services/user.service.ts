@@ -62,3 +62,15 @@ export const updatePassword = async (data: string) => {
         console.log(err)
     }
 }
+export const order = async (data: object) => {
+    try {
+        const resp = await axiosWithAuth({
+            method: 'post',
+            url: '/Users/order',
+            data: JSON.stringify(data)
+        })
+        return resp;
+    } catch (err) {
+        console.log(err)
+    }
+}

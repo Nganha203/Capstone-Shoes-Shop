@@ -14,6 +14,7 @@ export const axiosWithAuth = axios.create({
     baseURL: BASE_URL,
     timeout: 180_000, // giới hạn: mỗi lần call api chỉ trong 3 phút
 })
+
 axiosWithAuth.interceptors.request.use((config) => {
     config.headers["Authorization"] = `Bearer ${getLocalStorage(ACCESS_TOKEN)}`;
     return config;

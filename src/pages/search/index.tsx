@@ -1,9 +1,12 @@
 import React from 'react'
+import InputSearch from 'src/components/input/input'
 
-export default function Search() {
+function Search() {
   return (
     <div>
-      Page Search
+      <InputSearch/>
     </div>
   )
 }
+
+export default Search

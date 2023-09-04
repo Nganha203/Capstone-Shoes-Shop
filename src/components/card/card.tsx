@@ -1,6 +1,8 @@
-import React from 'react'
+import React, {useState} from 'react'
 import css from './card.module.scss'
 import { Link } from 'react-router-dom'
+import HeartIconWhite from 'src/assets/icons/heart.icon'
+import IconHeartRed from 'src/assets/icons/heart-red.icon'
 
 const data = {
     id: 1,
@@ -31,10 +33,17 @@ type Props = {
 }
 
 export function Card(props: Props) {
+    const [isLiked, setIsLiked] = useState(false);
+
+    const toggleLike = () => {
+        setIsLiked(isLiked => !isLiked); // Đảo ngược trạng thái khi biểu tượng được click
+    };
     const {data} = props
     return (
         <div className={css['card']}>
-
+            <div className={css['icon-heart']}>
+            {isLiked ? <div className={css['icon-heart-red']} onClick={toggleLike}><IconHeartRed/></div> : <div onClick={toggleLike} className={css['icon-heart-white']}><HeartIconWhite/></div> }
+            </div>
             <div className={css['content']}>
                 <img className={css['img']} src={data.image}/>
                 <p className={css['tittle']}>{data.name}</p>

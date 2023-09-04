@@ -52,6 +52,16 @@
 .button-add:active{
     background: linear-gradient(0deg, rgba(246, 80, 80, 0.9) 5.14%, #f83434 89.71%);
 }
+.minus,.plus{
+    background-color: rgb(40, 70, 235);
+    color: white;
+    padding: 0.6rem 1.2rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
 .content{
     margin-bottom: 3rem;
+}
+.button-quantity{
+    margin: 20px 0;
 }

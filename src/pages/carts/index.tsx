@@ -2,11 +2,46 @@
 import React from 'react';
 import { useCartContext } from 'src/components/context/cartContext';
 import css from './cart.module.scss'
+import { axiosWithAuth } from 'src/services/config.service';
 
 
 function Cart() {
-  const { cartItems, updateCartItemQuantity, remove } = useCartContext();
+  const { cartItems, updateCartItemQuantity, remove} = useCartContext();
 
+  const handleAgreeWithCarts = async () => {
+    try {
+      const accessToken = localStorage.getItem('ACCESS_TOKEN');
+      const orderData = {
+        orderDetail: cartItems.map(item => ({
+          productId: item.id,
+          quantity: item.quantity,
+        })),
+        email: 'nguyenngocnganha200@gmail.com', // email người dùng đã đăng nhập 
+      };
+
+      // Thực hiện yêu cầu API với access token
+      const response = await axiosWithAuth.post('Users/order', orderData);
+
+      // Kiểm tra phản hồi từ API
+      if (response.status === 200) {
+        alert('Order placed successfully!');
+      } else {
+        console.error('Error placing order:', response.data);
+      }
+    } catch (error) {
+      // Xử lý lỗi nếu có lỗi trong quá trình gọi API
+      console.error('Error placing order:', error);
+    }
+  };
+
+  const removeItem = (itemId: number) => {
+    const confirmDelete = window.confirm("Are you sure you want to remove this item?");
+    if (confirmDelete) {
+      remove(itemId)
+    }
+  };
+
+ 
   return (
     <div className={css['cart']}>
       <h1 style={{ textAlign: 'center' }}>Your Cart</h1>
@@ -28,18 +63,21 @@ function Cart() {
               <td ><img src={item.image} /></td>
               <td>{item.price} $</td>
               <td>
-                {item.quantity > 1 ? <button onClick={() => updateCartItemQuantity(item.id, -1)} className={css['minus']}>-</button> : <button onClick={() => remove(item.id)} className={css['minus']}>-</button>}
+                {item.quantity > 1 ? <button onClick={() => updateCartItemQuantity(item.id, -1)} className={css['minus']}>-</button> : <button onClick={() => removeItem(item.id)} className={css['minus']}>-</button>}
                 
                 <span className={css['cart-quantity']}>{item.quantity}</span>
                 <button onClick={() => updateCartItemQuantity(item.id, 1)} className={css['plus']}>+</button>
               </td>
               <td>{(item.price * item.quantity).toLocaleString()} $</td>
-              <td><button onClick={() => remove(item.id)} className={css['button-delete']}>Delete</button></td>
+              <td><button onClick={() => removeItem(item.id)} className={css['button-delete']}>Delete</button></td>
+              
             </tr>
           ))}
 
         </tbody>
       </table>
+      
+      <button onClick={handleAgreeWithCarts} className={css['button-agree']}>Agree with carts</button>
     </div>
   );
 }

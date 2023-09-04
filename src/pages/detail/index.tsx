@@ -5,6 +5,9 @@ import { IProduct } from './detail.type'
 import ListCard from 'src/components/listCard'
 import css from './detail.module.scss'
 import { useCartContext } from 'src/components/context/cartContext'
+import { useFormik } from 'formik'
+import { order } from 'src/services/user.service'
+import { getLocalStorage } from 'src/utils'
 
 type TParams = {
   productID: string
@@ -13,7 +16,30 @@ type TParams = {
 export default function Detail() {
   const param = useParams<TParams>()
   const [productItem, setProductItem] = useState<IProduct>()
-  const {addToCart, sizeShoes, size} = useCartContext()
+  const [userEmail, setUserEmail] = useState('');
+  const {addToCart, updateQuantityDetail, cartQuantityDetail} = useCartContext()
+
+  const formik = useFormik({
+    initialValues: {
+      orderDetail: [
+        {
+          productId: '',
+          quantity: 0
+        }
+      ],
+      email: ""
+    },
+    onSubmit: async (values) => {
+      try {
+        const response = await order(values); // Gọi API đặt hàng
+        console.log('Order placed successfully:', response);
+
+      } catch (error) {
+        console.error('Error placing order:', error);
+       
+      }
+    },
+  });
   
   useEffect(() => {
     if (!param.productID) return
@@ -25,31 +51,36 @@ export default function Detail() {
 
   }, [param.productID])
 
+  useEffect(() => {
+    const storedEmail = getLocalStorage('email')
+    if (storedEmail) {
+      setUserEmail(storedEmail);
+    }
+  }, []);
+
   const handleAddtoCarts = () =>{
     if(productItem){
       addToCart(productItem)
     }
     
   }
-  const handleSize = (size:string) =>{
-    sizeShoes(size)
-  } 
 
 
   return (
     <div className={css['detail']}>
+      {userEmail}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', margin: '3rem 0' }}>
         <div className={css['product-img-div']}>
           <img className={css['product-img']} style={{ width: 400, height: 400 }} src={productItem?.image} />
         </div>
         <div className='content'>
           <h3>{productItem?.name}</h3>
-          <p>{productItem?.shortDescription}</p>
+          <p style={{margin: '20px 0'}}>{productItem?.shortDescription}</p>
 
           <div className={css['size-container']}>
             {productItem?.size.map((item, index) => {
               return (
-                <button onClick={()=>handleSize(item)} className={css['button-size']} key={index}>
+                <button className={css['button-size']} key={index}>
                   <span className={css['size']}><a href="#">{item}</a></span>
                 </button>
               )
@@ -58,11 +89,16 @@ export default function Detail() {
           <h3 style={{color: 'red', marginTop: '20px', marginBottom:0}}>{productItem?.price}$</h3>
 
           <div className={css['button-quantity']}>
-           <p style={{fontSize: '25px'}}>Size: {size}</p>
+            {cartQuantityDetail >= 1 ? <button onClick={()=> productItem?.id !== undefined && updateQuantityDetail(productItem?.id, -1)} className={css['minus']}>-</button> : <button className={css['minus']}>-</button>}
+            <span style={{margin: '0 10px'}}>{cartQuantityDetail}</span>
+            <button onClick={()=> productItem?.id !== undefined && updateQuantityDetail(productItem?.id, 1)} className={css['plus']}>+</button>
           </div>
 
           <div className={css['add-to-card']}>
-            <button onClick={handleAddtoCarts} className={css['button-add']}>Add to cart</button>
+            <form onSubmit={formik.handleSubmit}>
+              <button type='submit' onClick={handleAddtoCarts} className={css['button-add']}>Add to cart</button>
+            </form>
+            
           </div>
 
         </div>

@@ -1,6 +1,5 @@
 import React from 'react'
 import css from './product.module.scss'
-import { Card } from 'src/components/card'
 import { useAppSelector } from 'src/redux/store'
 import ListCard from 'src/components/listCard'
 
