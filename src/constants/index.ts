@@ -1,4 +1,5 @@
 export const ACCESS_TOKEN = 'accessToken'
+export const EMAIL_USER = 'email_user'
 export enum MESSAGE {
     dangNhapThanhCong = "Đăng nhập thành công!",
     dangKyTaiKhoanThanhCong =  'Đăng ký tài khoản thành công!',

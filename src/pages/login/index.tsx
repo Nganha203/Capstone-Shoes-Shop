@@ -3,16 +3,18 @@ import css from "./login.module.scss";
 import ShoesInput from "src/components/shoes-input";
 import { useFormik } from "formik";
 import * as Y from "yup";
-import { userLogin } from "src/services/user.service";
+import { loginFacebook, userLogin } from "src/services/user.service";
 import { setLocalStorage } from "src/utils";
 import { NavLink } from "react-router-dom";
+import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import {
   ACCESS_TOKEN,
+  EMAIL_USER,
   FIELD_PROPS_NAME,
   FIELD_PROPS_NAME_UPPER_FIRST_CHAR,
   MESSAGE,
   NAVIGATE_URL,
-  VALIDATION_MESSAGE
+  VALIDATION_MESSAGE,
 } from "src/constants";
 import { useNavigate } from "react-router-dom";
 const registerSchema = Y.object({
@@ -21,6 +23,19 @@ const registerSchema = Y.object({
     .min(5, VALIDATION_MESSAGE.passwordMinLength)
     .required(VALIDATION_MESSAGE.passwordRequire),
 });
+const responseFacebook = (response: any) => {
+  const email = response.email;
+  loginFacebook(response.accessToken)
+    .then((resp) => {
+      if (resp?.data.message === MESSAGE.dangNhapThanhCong) {
+        setLocalStorage(ACCESS_TOKEN, resp?.data.content.accessToken);
+        setLocalStorage(EMAIL_USER, email);
+      } else {
+        alert(MESSAGE.fail);
+      }
+    })
+    .catch((err) => console.log(err));
+};
 export default function Login() {
   const navigate = useNavigate();
   const formik = useFormik({
@@ -36,12 +51,16 @@ export default function Login() {
       };
       userLogin(data)
         .then((resp: any) => {
+          if (typeof resp === "string") {
+            alert(resp);
+            return;
+          }
           if (resp.message === MESSAGE.dangNhapThanhCong) {
             setLocalStorage(ACCESS_TOKEN, resp.content.accessToken);
+            setLocalStorage(EMAIL_USER, data.email);
             navigate(NAVIGATE_URL.profile);
             return;
           }
-          alert(MESSAGE.fail);
         })
         .catch((err) => console.log(err));
     },
@@ -77,12 +96,23 @@ export default function Login() {
             <NavLink className={css["register"]} to={NAVIGATE_URL.register}>
               Register now ?
             </NavLink>
-            <button type="button" className={css["fb"]}>
-              Continue with Facebook
-              <span>
-                <IconFb />
-              </span>
-            </button>
+            <FacebookLogin
+              appId="963495338437666"
+              fields="name,email,picture"
+              render={(renderProps) => (
+                <button
+                  onClick={renderProps.onClick}
+                  type="button"
+                  className={css["fb"]}
+                >
+                  Continue with Facebook
+                  <span>
+                    <IconFb />
+                  </span>
+                </button>
+              )}
+              callback={responseFacebook}
+            />
           </div>
         </form>
       </div>

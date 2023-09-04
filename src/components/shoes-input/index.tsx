@@ -2,7 +2,7 @@ import { useState } from "react";
 import { IconEye } from "src/assets/icons";
 import css from "./shoes-input.module.scss";
 export default function ShoesInput(props: any) {
-  const { showEye, placeholder, type, getFieldProps, title, touched, error } =
+  const { showEye, placeholder, type, getFieldProps, title, touched, error, disabled } =
     props;
     const[showText, setShowText] = useState(type)
     const handleChange = () => {
@@ -18,7 +18,7 @@ export default function ShoesInput(props: any) {
       <div className={css["shoes_input"]}>
         <p>{title}</p>
         <div>
-          <input type={showText} placeholder={placeholder} {...getFieldProps} />
+          <input type={showText} placeholder={placeholder} {...getFieldProps} disabled={disabled} />
           {showEye && (
             <span onClick={handleChange} className={css["eye"]}>
               <IconEye />
