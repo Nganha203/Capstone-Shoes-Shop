@@ -126,11 +126,12 @@ export default function Profile() {
             <ShoesInput
               showEye={false}
               placeholder={FIELD_PROPS_NAME_UPPER_FIRST_CHAR.Email}
-              type={FIELD_PROPS_NAME.email}
+              type={FIELD_PROPS_NAME.email} 
               title={FIELD_PROPS_NAME.email}
               getFieldProps={formik.getFieldProps(FIELD_PROPS_NAME.email)}
               touched={formik.touched.email}
               error={formik.errors.email}
+              disabled={true}
             />
             <ShoesInput
               showEye={false}

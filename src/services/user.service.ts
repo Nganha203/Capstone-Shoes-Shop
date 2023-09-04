@@ -11,6 +11,7 @@ export const userLogin = async (data: { email: string; password: string }) => {
         return resp.data;
     } catch (error) {
         console.log(error)
+        return error.response.data.message;
     }
 };
 export const signup = async (data: UserRegister) => {
@@ -23,6 +24,7 @@ export const signup = async (data: UserRegister) => {
         return resp.data;
     } catch (err) {
         console.log(err)
+        return err.response.data.message;
     }
 }
 export const getProfile = async () => {
@@ -72,5 +74,19 @@ export const order = async (data: object) => {
         return resp;
     } catch (err) {
         console.log(err)
+    }
+}
+export const loginFacebook = async (data: string) => {
+    try {
+        const resp = await axiosWithoutAuth({
+            method: 'post',
+            url: '/Users/facebooklogin',
+            data: {
+                "facebookToken": data
+            }
+        })
+        return resp
+    } catch (error) {
+        console.log(error)
     }
 }
