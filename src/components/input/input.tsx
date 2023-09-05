@@ -20,7 +20,7 @@ const onSearch = (value: string) => console.log(value);
 const InputSearch: React.FC = () => (
   <Space direction="vertical">
     <Search
-      placeholder="input search text"
+      placeholder="search shoes"
       allowClear
       enterButton="Search"
       size="large"

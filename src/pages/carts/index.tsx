@@ -3,6 +3,7 @@ import React from 'react';
 import { useCartContext } from 'src/components/context/cartContext';
 import css from './cart.module.scss'
 import { axiosWithAuth } from 'src/services/config.service';
+import { getLocalStorage } from 'src/utils';
 
 
 function Cart() {
@@ -10,13 +11,14 @@ function Cart() {
 
   const handleAgreeWithCarts = async () => {
     try {
-      const accessToken = localStorage.getItem('ACCESS_TOKEN');
+      const email_user = getLocalStorage('email_user');
+      console.log(email_user)
       const orderData = {
         orderDetail: cartItems.map(item => ({
           productId: item.id,
           quantity: item.quantity,
         })),
-        email: 'nguyenngocnganha200@gmail.com', // email người dùng đã đăng nhập 
+        email: email_user, // email người dùng đã đăng nhập 
       };
 
       // Thực hiện yêu cầu API với access token
