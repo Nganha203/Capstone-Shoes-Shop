@@ -1,9 +1,11 @@
 import ShoesInput from "src/components/shoes-input";
+import { Pagination } from "antd";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import css from "./profile.module.scss";
 import ShoesInputRadioGender from "src/components/shoes_input_radio";
 import { useFormik } from "formik";
+import { useState } from "react";
 import { getLocalStorage } from "src/utils";
 import {
   ACCESS_TOKEN,
@@ -18,6 +20,7 @@ import {
   updateProfile,
 } from "src/services/user.service";
 import * as Y from "yup";
+import Paging from "src/components/paging";
 export type TUserProfileUpdate = {
   name: string;
   email: string;
@@ -39,6 +42,9 @@ const registerSchema = Y.object({
 });
 export default function Profile() {
   const navigate = useNavigate();
+  const [listOrder, setListOrder] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(0);
   const formik = useFormik({
     initialValues: {
       avatar: "",
@@ -64,19 +70,13 @@ export default function Profile() {
         if (updateProfileResp?.data.content !== MESSAGE.success) {
           updateProfileSuccessFlag = false;
         }
-        if(password) {
+        if (password) {
           const updatePasswordResp = await updatePassword(password);
           if (updatePasswordResp?.data.content !== MESSAGE.success) {
             updatePasswordSuccessFlag = false;
           }
         }
-        
         // hien thi thong bao
-        console.log(
-          "alert profile password",
-          updateProfileSuccessFlag,
-          updatePasswordSuccessFlag,
-        );
         if (updatePasswordSuccessFlag && updateProfileSuccessFlag) {
           alert(MESSAGE.success);
           return;
@@ -109,8 +109,65 @@ export default function Profile() {
       formik.setFieldValue(FIELD_PROPS_NAME.gender, gender);
       formik.setFieldValue(FIELD_PROPS_NAME.phone, phone);
       formik.setFieldValue(FIELD_PROPS_NAME.name, name);
+      // ------------
+      const lstOrder = data?.data.content.ordersHistory;
+      lstOrder.sort(
+        (item1: any, item2: any) =>
+          new Date(item2.date).getTime() - new Date(item1.date).getTime(),
+      );
+      setListOrder(() => lstOrder);
+      setTotalPage(Math.ceil(lstOrder.length / 2));
     })();
   }, []);
+  const renderListCart = (currentPage: number, listOrder: []) => {
+    const pageSize = 2;
+    const orderSkip: number = (currentPage - 1) * pageSize;
+    const listRender = listOrder.slice(orderSkip, orderSkip + pageSize);
+    let totalPrice = 0;
+    return listRender.map((item: any) => {
+      totalPrice = 0;
+      return (
+        <div key={item.id} className={css["cart"]}>
+          <p className={css["cart-title"]}>
+            + Orders have been placed on{" "}
+            {item.date.toLocaleString().replace("T", " ")}
+          </p>
+          <table className={css["cart-table"]}>
+            <thead>
+              <tr>
+                <th>image</th>
+                <th>name</th>
+                <th>price</th>
+                <th>quantity</th>
+                <th>total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {item.orderDetail.map((orderItem: any) => {
+                totalPrice += orderItem.price * orderItem.quantity;
+                return (
+                  <tr key={orderItem.name}>
+                    <td>
+                      <img src={orderItem.image} alt="..." />
+                    </td>
+                    <td>{orderItem.name}</td>
+                    <td>{orderItem.price}</td>
+                    <td>
+                      <span>{orderItem.quantity}</span>
+                    </td>
+                    <td>
+                      {(orderItem.price * orderItem.quantity).toLocaleString()}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+          <div>Total: {totalPrice.toLocaleString()}</div>
+        </div>
+      );
+    });
+  };
   return (
     <>
       <div className={css["wrap"]}>
@@ -126,7 +183,7 @@ export default function Profile() {
             <ShoesInput
               showEye={false}
               placeholder={FIELD_PROPS_NAME_UPPER_FIRST_CHAR.Email}
-              type={FIELD_PROPS_NAME.email} 
+              type={FIELD_PROPS_NAME.email}
               title={FIELD_PROPS_NAME.email}
               getFieldProps={formik.getFieldProps(FIELD_PROPS_NAME.email)}
               touched={formik.touched.email}
@@ -176,73 +233,14 @@ export default function Profile() {
           </div>
           <div className={css["menu-item"]}>Favorite</div>
         </div>
-        <div className={css["cart"]}>
-          <p className={css["cart-title"]}>
-            + Orders have been placed on 09 - 19 - 2020
-          </p>
-          <table className={css["cart-table"]}>
-            <thead>
-              <tr>
-                <th>Id</th>
-                <th>image</th>
-                <th>name</th>
-                <th>price</th>
-                <th>quantity</th>
-                <th>total</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>
-                  <img src="src/assets/imgs/image5.png" alt="..." />
-                </td>
-                <td>Product 1</td>
-                <td>1000</td>
-                <td>1</td>
-                <td>1000</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div className={css["cart"]}>
-          <p className={css["cart-title"]}>
-            + Orders have been placed on 09 - 19 - 2020
-          </p>
-          <table className={css["cart-table"]}>
-            <thead>
-              <tr>
-                <th>Id</th>
-                <th>image</th>
-                <th>name</th>
-                <th>price</th>
-                <th>quantity</th>
-                <th>total</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>
-                  <img src="src/assets/imgs/image5.png" alt="..." />
-                </td>
-                <td>Product 1</td>
-                <td>1000</td>
-                <td>1</td>
-                <td>1000</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div className={css["page"]}>
-          <div className={css["page-button"] + " " + css["disable"]}>&lt;</div>
-          <div className={css["page-button"] + " " + css["active"]}>1</div>
-          <div className={css["page-button"]}>2</div>
-          <div className={css["page-button" + " " + css["dot"]]}>...</div>
-          <div className={css["page-button"]}>9</div>
-          <div className={css["page-button"]}>10</div>
-          <div className={css["page-button"]}>&gt;</div>
-        </div>
+        {renderListCart(currentPage, listOrder as [])}
+        {totalPage > 1 && (
+          <Paging
+            totalItem={totalPage}
+            selectedPage={currentPage}
+            setSelectedPage={setCurrentPage}
+          />
+        )}
       </div>
     </>
   );
