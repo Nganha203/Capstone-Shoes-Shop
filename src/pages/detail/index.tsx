@@ -52,11 +52,11 @@ export default function Detail() {
   }, [param.productID])
 
   useEffect(() => {
-    const storedEmail = getLocalStorage('email')
+    const storedEmail = getLocalStorage('email_user')
     if (storedEmail) {
       setUserEmail(storedEmail);
     }
-  }, []);
+  }, [userEmail]);
 
   const handleAddtoCarts = () =>{
     if(productItem){

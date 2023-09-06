@@ -3,7 +3,7 @@ import React from 'react';
 import { useCartContext } from 'src/components/context/cartContext';
 import css from './cart.module.scss'
 import { axiosWithAuth } from 'src/services/config.service';
-import { getLocalStorage } from 'src/utils';
+import { getLocalStorage} from 'src/utils';
 
 
 function Cart() {
@@ -12,7 +12,6 @@ function Cart() {
   const handleAgreeWithCarts = async () => {
     try {
       const email_user = getLocalStorage('email_user');
-      console.log(email_user)
       const orderData = {
         orderDetail: cartItems.map(item => ({
           productId: item.id,
@@ -27,7 +26,8 @@ function Cart() {
       // Kiểm tra phản hồi từ API
       if (response.status === 200) {
         alert('Order placed successfully!');
-      } else {
+      } 
+      else {
         console.error('Error placing order:', response.data);
       }
     } catch (error) {
@@ -42,11 +42,11 @@ function Cart() {
       remove(itemId)
     }
   };
-
+  
  
   return (
     <div className={css['cart']}>
-      <h1 style={{ textAlign: 'center' }}>Your Cart</h1>
+      <h1 style={{ textAlign: 'center', margin: '50px 0' }}>Your Cart</h1>
       <table style={{ width: '100%' }}>
         <thead>
           <tr className={css['cart-title']}>

@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { IProduct } from 'src/pages/detail/detail.type';
+import { getLocalStorage, setLocalStorage } from 'src/utils';
 
 interface CartContextType {
   cartQuantity: number;
@@ -38,11 +39,12 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
       const updatedCartItems = [...cartItems];
       updatedCartItems[existingItemIndex] = { ...cartItems[existingItemIndex], quantity: cartItems[existingItemIndex].quantity + 1 };
       setCartItem(updatedCartItems);
-
+      setCartQuantityDetail(cartQuantityDetail+1)
+      
     } else {
       setCartItem([...cartItems, { ...item, quantity: cartQuantityDetail }]);
     }
-
+    saveCartToLocalStorage(cartItems)
   };
   // Cập nhật số lượng sản phẩm khi nhấn nút tăng giảm trong CARTS
   const updateCartItemQuantity = (idProduct: number, currentQuantity: number) => {
@@ -56,6 +58,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
 
     setCartItem(updatedCartItems);
     setCartQuantity(cartQuantity + currentQuantity);
+    saveCartToLocalStorage(updatedCartItems)
   }
 
   // Cập nhật số lượng sản phẩm khi nhấn nút tăng giảm trong DETAIL
@@ -70,6 +73,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
       
     setCartItem(updatedCartItems);
     setCartQuantityDetail(cartQuantityDetail + currentQuantity);
+    saveCartToLocalStorage(updatedCartItems)
   }
 
 
@@ -79,7 +83,21 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     const newQuantity = newCart.reduce((total, item) => total + item.quantity, 0)
     setCartItem(newCart)
     setCartQuantity(newQuantity)
+    saveCartToLocalStorage(newCart)
   }
+
+  // save cart
+  function saveCartToLocalStorage(cartItems: IProduct[]) {
+    setLocalStorage('cart', cartItems)
+  }
+  // get cart
+  useEffect(() => {
+    const cartItemsFromStorage = getLocalStorage('cart');
+    if (cartItemsFromStorage) {
+      setCartItem(cartItemsFromStorage);
+    }
+  }, []);
+  
 
   const contextValue: CartContextType = {
     cartQuantity,

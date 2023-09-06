@@ -23,3 +23,14 @@ export const getProductById = async (id: string | number) => {
   }
 
 }
+export const getSearchProduct = async (name: string) => {
+  
+  // console.log(resp)
+  try {
+    const resp = await axiosWithoutAuth(`/Product?keyword=${name}`)
+    return resp.data
+  } catch (error) {
+    console.log(error)
+  }
+  
+}

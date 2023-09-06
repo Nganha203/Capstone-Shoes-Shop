@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import css from './card.module.scss'
 import { Link } from 'react-router-dom'
 import HeartIconWhite from 'src/assets/icons/heart.icon'
@@ -18,9 +18,8 @@ const data = {
     relatedProducts: "[2,3,5]",
     feature: true,
     image: "https://shop.cyberlearn.vn/images/adidas-prophere.png",
-    
-}
 
+}
 export type TCard = {
     image: string,
     name: string,
@@ -38,20 +37,22 @@ export function Card(props: Props) {
     const toggleLike = () => {
         setIsLiked(isLiked => !isLiked); // Đảo ngược trạng thái khi biểu tượng được click
     };
-    const {data} = props
+    const { data } = props
     return (
-        <div className={css['card']}>
-            <div className={css['icon-heart']}>
-            {isLiked ? <div className={css['icon-heart-red']} onClick={toggleLike}><IconHeartRed/></div> : <div onClick={toggleLike} className={css['icon-heart-white']}><HeartIconWhite/></div> }
-            </div>
-            <div className={css['content']}>
-                <img className={css['img']} src={data.image}/>
-                <p className={css['tittle']}>{data.name}</p>
-                <p className={css['decs']}>{data.shortDescription}</p>
-            </div>
-            <div className={css['action']}>
-                <Link className={css['action-buy']} to={`/detail/${data.id}`}>Buy</Link>
-                <Link className={css['action-price']} to={`/detail/${data.id}`}>{data.price}$</Link>
+        <div className={css['container']}>
+            <div className={css['card']}>
+                <div className={css['icon-heart']}>
+                    {isLiked ? <div className={css['icon-heart-red']} onClick={toggleLike}><IconHeartRed /></div> : <div onClick={toggleLike} className={css['icon-heart-white']}><HeartIconWhite /></div>}
+                </div>
+                <div className={css['content']}>
+                    <img className={css['img']} src={data.image} />
+                    <p className={css['tittle']}>{data.name}</p>
+                    <p className={css['decs']}>{data.shortDescription}</p>
+                </div>
+                <div className={css['action']}>
+                    <Link className={css['action-buy']} to={`/detail/${data.id}`}>Buy</Link>
+                    <Link className={css['action-price']} to={`/detail/${data.id}`}>{data.price}$</Link>
+                </div>
             </div>
         </div>
     )

@@ -1,0 +1,40 @@
+.container{
+    margin: 0 2rem;
+}
+.input-search{
+    font-size: 2rem;
+    padding: 1.5rem 1.5rem;
+    margin-left: 50rem;
+}
+.button-search{
+    font-size: 1.6rem;
+    padding: 1rem 1rem;
+    border-radius: 0.5rem;
+    margin-left: 2rem;
+    background-color: rgb(26, 237, 26);
+    cursor: pointer;
+}
+.button-search:active{
+    color: white;
+    background-color: black;
+}
+.list-card{
+    margin: 5rem 0;
+    display: flex;
+    flex-wrap: wrap; 
+}
+.button-sort{
+    display: flex;
+    text-align: end;
+    margin: 0 5rem;
+}
+.button-asc,.button-desc{
+    padding: 1rem;
+    background-color: rgb(43, 233, 43);
+    margin-left: 2rem;
+   cursor: pointer;
+}
+.button-asc:active,.button-desc:active{
+    background-color: black;
+    color: white;
+}
