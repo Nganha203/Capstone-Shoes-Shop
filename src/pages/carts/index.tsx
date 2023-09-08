@@ -17,7 +17,7 @@ function Cart() {
           productId: item.id,
           quantity: item.quantity,
         })),
-        email: email_user, // email người dùng đã đăng nhập 
+        email: email_user, 
       };
 
       // Thực hiện yêu cầu API với access token

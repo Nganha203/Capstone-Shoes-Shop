@@ -16,7 +16,6 @@ type TParams = {
 export default function Detail() {
   const param = useParams<TParams>()
   const [productItem, setProductItem] = useState<IProduct>()
-  const [userEmail, setUserEmail] = useState('');
   const {addToCart, updateQuantityDetail, cartQuantityDetail} = useCartContext()
 
   const formik = useFormik({
@@ -51,13 +50,6 @@ export default function Detail() {
 
   }, [param.productID])
 
-  useEffect(() => {
-    const storedEmail = getLocalStorage('email_user')
-    if (storedEmail) {
-      setUserEmail(storedEmail);
-    }
-  }, [userEmail]);
-
   const handleAddtoCarts = () =>{
     if(productItem){
       addToCart(productItem)
@@ -68,7 +60,6 @@ export default function Detail() {
 
   return (
     <div className={css['detail']}>
-      {userEmail}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', margin: '3rem 0' }}>
         <div className={css['product-img-div']}>
           <img className={css['product-img']} style={{ width: 400, height: 400 }} src={productItem?.image} />

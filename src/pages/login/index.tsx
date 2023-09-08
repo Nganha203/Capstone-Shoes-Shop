@@ -56,6 +56,7 @@ export default function Login() {
             return;
           }
           if (resp.message === MESSAGE.dangNhapThanhCong) {
+            console.log(resp.content.accessToken)
             setLocalStorage(ACCESS_TOKEN, resp.content.accessToken);
             setLocalStorage(EMAIL_USER, data.email);
             navigate(NAVIGATE_URL.profile);

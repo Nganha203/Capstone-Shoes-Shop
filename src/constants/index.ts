@@ -11,7 +11,9 @@ export enum MESSAGE {
 export enum NAVIGATE_URL {
     login = "/login",
     profile = '/profile',
-    register = '/register'
+    register = '/register',
+    carts = '/carts',
+    home = '/'
 }
 export enum FIELD_PROPS_NAME {
     text = 'text',
