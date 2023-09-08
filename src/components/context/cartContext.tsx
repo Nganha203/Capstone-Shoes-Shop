@@ -1,15 +1,18 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { IProduct } from 'src/pages/detail/detail.type';
-import { getLocalStorage, setLocalStorage } from 'src/utils';
+import { getLocalStorage, removeLocalStorage, setLocalStorage } from 'src/utils';
 
 interface CartContextType {
   cartQuantity: number;
   cartQuantityDetail: number;
   cartItems: IProduct[];
+  userEmail: string;
   addToCart: (item: IProduct) => void;
   updateCartItemQuantity: (productId: number, change: number) => void;
   updateQuantityDetail: (productId: number, change: number) => void;
   remove: (productId: number) => void;
+  handleLogout: () => void;
+  handldeLogin: () => void;
 }
 interface CartProviderProps {
   children: ReactNode;
@@ -29,36 +32,37 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   const [cartQuantity, setCartQuantity] = useState(0);
   const [cartItems, setCartItem] = useState<IProduct[]>([])
   const [cartQuantityDetail, setCartQuantityDetail] = useState(1);
+  const [userEmail, setUserEmail] = useState(getLocalStorage('email_user') || "");
+
+  // const user_email = getLocalStorage('email_user')
 
   // ADD SP
   const addToCart = (item: IProduct) => {
-   
     const existingItemIndex = cartItems.findIndex(cartItem => cartItem.id === item.id)
-
     if (existingItemIndex !== -1) {
       const updatedCartItems = [...cartItems];
       updatedCartItems[existingItemIndex] = { ...cartItems[existingItemIndex], quantity: cartItems[existingItemIndex].quantity + 1 };
       setCartItem(updatedCartItems);
-      setCartQuantityDetail(cartQuantityDetail+1)
-      
+      setCartQuantityDetail(cartQuantityDetail + 1)
+
     } else {
       setCartItem([...cartItems, { ...item, quantity: cartQuantityDetail }]);
     }
-    saveCartToLocalStorage(cartItems)
+    saveCartToLocalStorage(userEmail, cartItems)
   };
   // Cập nhật số lượng sản phẩm khi nhấn nút tăng giảm trong CARTS
   const updateCartItemQuantity = (idProduct: number, currentQuantity: number) => {
     const updatedCartItems = cartItems.map((item) => {
       if (idProduct === item.id) {
         const newQuantity = item.quantity + currentQuantity
-          return { ...item, quantity: newQuantity }
+        return { ...item, quantity: newQuantity }
       }
       return item
     })
 
     setCartItem(updatedCartItems);
     setCartQuantity(cartQuantity + currentQuantity);
-    saveCartToLocalStorage(updatedCartItems)
+    saveCartToLocalStorage(userEmail, updatedCartItems)
   }
 
   // Cập nhật số lượng sản phẩm khi nhấn nút tăng giảm trong DETAIL
@@ -70,12 +74,11 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
       }
       return item
     })
-      
+
     setCartItem(updatedCartItems);
     setCartQuantityDetail(cartQuantityDetail + currentQuantity);
-    saveCartToLocalStorage(updatedCartItems)
+    saveCartToLocalStorage(userEmail, updatedCartItems)
   }
-
 
   // Remove 
   const remove = (idProduct: number) => {
@@ -83,31 +86,62 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     const newQuantity = newCart.reduce((total, item) => total + item.quantity, 0)
     setCartItem(newCart)
     setCartQuantity(newQuantity)
-    saveCartToLocalStorage(newCart)
+    saveCartToLocalStorage(userEmail, newCart)
   }
 
   // save cart
-  function saveCartToLocalStorage(cartItems: IProduct[]) {
-    setLocalStorage('cart', cartItems)
+  function saveCartToLocalStorage(email: string, cartItems: IProduct[]) {
+    const key = `cart_${email}`;
+    setLocalStorage(key, cartItems);
   }
+
   // get cart
   useEffect(() => {
-    const cartItemsFromStorage = getLocalStorage('cart');
+    const cartItemsFromStorage = getLocalStorage(`cart_${userEmail}`);
     if (cartItemsFromStorage) {
       setCartItem(cartItemsFromStorage);
     }
-  }, []);
-  
+  }, [userEmail]);
+
+  // Cập nhật sau mỗi lần gọi setCartItem
+  useEffect(() => {
+    saveCartToLocalStorage(userEmail, cartItems);
+  }, [cartItems, userEmail]);
+
+
+  const handldeLogin = () => {
+    const email = getLocalStorage('email_user');
+    setUserEmail(email);
+    const cartItemsFromStorage = getLocalStorage(`cart_${email}`);
+    if (cartItemsFromStorage) {
+      setCartItem(cartItemsFromStorage);
+    } else {
+      setCartItem([]); 
+    }
+  };
+
+  const handleLogout = () => {
+    removeLocalStorage('accessToken');
+    removeLocalStorage('totalQuantity');
+    removeLocalStorage('email_user');
+    setUserEmail(''); 
+    setCartItem([]);
+  };
+
+
 
   const contextValue: CartContextType = {
     cartQuantity,
     cartQuantityDetail,
     cartItems,
+    userEmail,
     addToCart,
     updateCartItemQuantity,
     updateQuantityDetail,
     remove,
-  
+    handleLogout,
+    handldeLogin
+
   };
 
   return (
