@@ -1,4 +1,4 @@
-import React, {useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import css from './header.module.scss'
 import { Link, useNavigate } from 'react-router-dom'
 import { IconSearch, IconCart } from 'src/assets/icons'
@@ -10,7 +10,7 @@ import { getLocalStorage } from 'src/utils'
 export default function Header() {
   const { cartItems, userEmail, handleLogout, handldeLogin } = useCartContext();
   const totalQuantity = useMemo(() => cartItems.reduce((total, item) => total + item.quantity, 0), [cartItems]);
-  
+
   const tokenLogin = getLocalStorage('accessToken')
 
   const navigate = useNavigate();
@@ -26,21 +26,22 @@ export default function Header() {
   const handleLogoutClick = () => {
     handleLogout();
     navigate(NAVIGATE_URL.home);
-  
+
   };
   const handleEmail = () => {
     navigate(NAVIGATE_URL.profile);
-    
+
   };
 
 
   return (
     <>
       <header className={css.header}>
-        <Link to='/'><img src={logoImg} alt="" /></Link>
-
+        <div onClick={handldeLogin}>
+          <Link to='/'><img src={logoImg} alt="" /></Link>
+        </div>
         <div className={css['header-left']}>
-          <div onClick={handleEmail} style={{cursor: 'pointer'}}>{userEmail}</div>
+          {tokenLogin ? <div onClick={handleEmail} style={{ cursor: 'pointer' }}>{userEmail}</div> : ''}
           <div className={css['icon-search']}>
             <Link to='/search'><IconSearch /></Link>
             <Link to='/search'><span style={{ color: 'white' }}>Search</span></Link>
@@ -65,7 +66,7 @@ export default function Header() {
 
       <nav>
         <ul className={css['nav']}>
-          <li>
+          <li onClick={handldeLogin}>
             <Link className={css['active']} to='/'>Home </Link>
           </li>
           <li>
