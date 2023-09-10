@@ -13,6 +13,7 @@ export enum NAVIGATE_URL {
     profile = '/profile',
     register = '/register',
     carts = '/carts',
+    detail = 'detail/:productID',
     home = '/'
 }
 export enum FIELD_PROPS_NAME {
