@@ -54,7 +54,7 @@ export function Card(props: Props) {
 
     const { data } = props
     return (
-        <div className={css['container']}>
+        // <div className={css['container']}>
             <div className={css['card']}>
                 <div className={css['icon-heart']}>
                     {isLiked ? <div className={css['icon-heart-red']} onClick={toggleLike}><IconHeartRed /></div> : <div onClick={toggleLike} className={css['icon-heart-white']}><HeartIconWhite /></div>}
@@ -70,7 +70,7 @@ export function Card(props: Props) {
                     <Link className={css['action-price']} to={`/detail/${data.id}`}>{data.price}$</Link>
                 </div>
             </div>
-        </div>
+        // </div>
     )
 
 }
