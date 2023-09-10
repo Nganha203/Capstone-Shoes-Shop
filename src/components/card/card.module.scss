@@ -1,9 +1,10 @@
-.container{
- display: flex;
- flex: 1;
- max-width: 34rem;
+.container {
+    display: flex;
+    flex: 1;
+    max-width: 34rem;
 }
-.card{
+
+.card {
     min-height: 37rem;
     background: #F8F8F8;
     box-shadow: 0px 4px 4px 0px #00000040;
@@ -11,37 +12,39 @@
     flex-direction: column;
 }
 
-.img{
-   max-width: 20rem;
-   max-height: 20rem;
-   margin: 0 auto;
-   
+.img {
+    max-width: 20rem;
+    max-height: 20rem;
+    margin: 0 auto;
 }
-.content{
+
+.content {
     padding: 1rem 1rem;
 }
-.title{
+
+.title {
     font-weight: 300;
     font-size: 2.4rem;
     text-align: left;
     color: #000000;
-
 }
-.decs{
+
+.decs {
     color: #CBC9C9;
     font-size: 2rem;
     font-weight: 300;
     padding: 2rem 0;
 }
-.action{
+
+.action {
     height: 6.5rem;
     display: flex;
     align-items: center;
-
     margin-top: auto;
-
 }
-.action-buy,.action-price{
+
+.action-buy,
+.action-price {
     text-align: center;
     text-decoration: none;
     width: 100%;
@@ -49,31 +52,24 @@
     display: grid;
     place-content: center;
     color: #000000;
-
 }
-.action-buy{
+
+.action-buy {
     background-color: #9DE167;
     cursor: pointer;
 }
-.action-price{
+
+.action-price {
     background-color: #DEDDDC;
     font-weight: 500;
 }
-.icon-heart{
-   padding-left: 29rem;
-   
+
+.icon-heart {
+    padding-left: 29rem;
 }
-.icon-heart-red,.icon-heart-white{
+
+.icon-heart-red,
+.icon-heart-white {
     cursor: pointer;
     width: 50px;
-    
 }
-
-
-  
-  
-  
-  
-  
-  
-  
