@@ -23,19 +23,6 @@ const registerSchema = Y.object({
     .min(5, VALIDATION_MESSAGE.passwordMinLength)
     .required(VALIDATION_MESSAGE.passwordRequire),
 });
-const responseFacebook = (response: any) => {
-  const email = response.email;
-  loginFacebook(response.accessToken)
-    .then((resp) => {
-      if (resp?.data.message === MESSAGE.dangNhapThanhCong) {
-        setLocalStorage(ACCESS_TOKEN, resp?.data.content.accessToken);
-        setLocalStorage(EMAIL_USER, email);
-      } else {
-        alert(MESSAGE.fail);
-      }
-    })
-    .catch((err) => console.log(err));
-};
 export default function Login() {
   const navigate = useNavigate();
   const formik = useFormik({
@@ -56,7 +43,7 @@ export default function Login() {
             return;
           }
           if (resp.message === MESSAGE.dangNhapThanhCong) {
-            console.log(resp.content.accessToken)
+            console.log(resp.content.accessToken);
             setLocalStorage(ACCESS_TOKEN, resp.content.accessToken);
             setLocalStorage(EMAIL_USER, data.email);
             navigate(NAVIGATE_URL.profile);
@@ -66,6 +53,20 @@ export default function Login() {
         .catch((err) => console.log(err));
     },
   });
+  const responseFacebook = (response: any) => {
+    const email = response.email;
+    loginFacebook(response.accessToken)
+      .then((resp) => {
+        if (resp?.data.message === MESSAGE.dangNhapThanhCong) {
+          setLocalStorage(ACCESS_TOKEN, resp?.data.content.accessToken);
+          setLocalStorage(EMAIL_USER, email);
+          navigate(NAVIGATE_URL.profile);
+        } else {
+          alert(MESSAGE.fail);
+        }
+      })
+      .catch((err) => console.log(err));
+  };
   return (
     <>
       <div className={css["login_container"]}>
