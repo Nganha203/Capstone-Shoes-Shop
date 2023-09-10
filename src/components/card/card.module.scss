@@ -1,9 +1,9 @@
 .container{
-    flex: 1;
-    display: flex;
+ display: flex;
+ flex: 1;
+ max-width: 34rem;
 }
 .card{
-    max-width: 34rem;
     min-height: 37rem;
     background: #F8F8F8;
     box-shadow: 0px 4px 4px 0px #00000040;
@@ -68,9 +68,7 @@
     width: 50px;
     
 }
-.card:last-child{
-    margin-right: auto;
-}
+
 
   
   

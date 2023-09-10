@@ -7,7 +7,9 @@
     align-items: stretch ;
     &::after {
         content: "";
+        display: block;
         flex: 1;
+        max-width: 34rem;
     }
     @media screen and (max-width:768px) {
         justify-content: center;
