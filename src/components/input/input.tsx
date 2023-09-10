@@ -10,8 +10,6 @@ const SearchInput = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSearching, setIsSearching] = useState(false)
 
-  const [sortedProducts, setSortedProducts] = useState<TCard[]>([]);
-
 
   useEffect(() => {
     if (!searchTerm) {
@@ -39,7 +37,7 @@ const SearchInput = () => {
   // SẮP XẾP
   const sortProducts = (products: TCard[], sortOrder: 'asc' | 'desc') => {
     const sorted = _.orderBy(products, ['price'], [sortOrder]);
-    setSortedProducts(sorted);
+    setSearchResults(sorted);
   };
 
 
@@ -52,6 +50,13 @@ const SearchInput = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
       />
       <button className={css['button-search']} onClick={handleSearchClick}>Search</button>
+
+      <div className={css['button-sort']}>
+        <button className={css['button-asc']} onClick={() => sortProducts(searchResults, 'asc')}>Sắp xếp giá tăng dần</button>
+        <br />
+        <button className={css['button-desc']} onClick={() => sortProducts(searchResults, 'desc')}>Sắp xếp giá giảm dần</button>
+      </div>
+
       {isLoading ? (
         <p>Loading...</p>
       ) : (
@@ -63,23 +68,6 @@ const SearchInput = () => {
           })}
         </div>
       )}
-      <div className={css['button-sort']}>
-        <button className={css['button-asc']} onClick={() => sortProducts(searchResults, 'asc')}>Sắp xếp giá tăng dần</button>
-        <br />
-        <button className={css['button-desc']} onClick={() => sortProducts(searchResults, 'desc')}>Sắp xếp giá giảm dần</button>
-      </div>
-
-      <div className={css['list-card']}>
-        {sortedProducts.length > 0 ? (
-          sortedProducts.map((product) => (
-            <Card key={product.id} data={product} />
-          ))
-        ) : (
-          searchResults.map((product) => (
-            <Card key={product.id} data={product} />
-          ))
-        )}
-      </div>
 
     </div>
   );

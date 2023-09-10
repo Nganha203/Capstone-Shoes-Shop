@@ -7,7 +7,6 @@ import css from './detail.module.scss'
 import { useCartContext } from 'src/components/context/cartContext'
 import { useFormik } from 'formik'
 import { order } from 'src/services/user.service'
-import { getLocalStorage } from 'src/utils'
 
 type TParams = {
   productID: string
@@ -16,7 +15,7 @@ type TParams = {
 export default function Detail() {
   const param = useParams<TParams>()
   const [productItem, setProductItem] = useState<IProduct>()
-  const {addToCart, updateQuantityDetail, cartQuantityDetail} = useCartContext()
+  const {addToCart, updateQuantityDetail, cartQuantityDetail, setCartQuantityDetail} = useCartContext()
 
   const formik = useFormik({
     initialValues: {
@@ -45,6 +44,7 @@ export default function Detail() {
     getProductById(param.productID).then((resp) => {
       // console.log(resp)
       setProductItem(resp.content)
+      setCartQuantityDetail(1); 
     })
     .catch((err) => { console.log(err) })
 
@@ -80,7 +80,7 @@ export default function Detail() {
           <h3 style={{color: 'red', marginTop: '20px', marginBottom:0}}>{productItem?.price}$</h3>
 
           <div className={css['button-quantity']}>
-            {cartQuantityDetail >= 1 ? <button onClick={()=> productItem?.id !== undefined && updateQuantityDetail(productItem?.id, -1)} className={css['minus']}>-</button> : <button className={css['minus']}>-</button>}
+            {cartQuantityDetail > 1 ? <button onClick={()=> productItem?.id !== undefined && updateQuantityDetail(productItem?.id, -1)} className={css['minus']}>-</button> : <button className={css['minus']}>-</button>}
             <span style={{margin: '0 10px'}}>{cartQuantityDetail}</span>
             <button onClick={()=> productItem?.id !== undefined && updateQuantityDetail(productItem?.id, 1)} className={css['plus']}>+</button>
           </div>

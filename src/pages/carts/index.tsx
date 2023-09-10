@@ -79,7 +79,7 @@ function Cart() {
         </tbody>
       </table>
       
-      <button onClick={handleAgreeWithCarts} className={css['button-agree']}>Agree with carts</button>
+      <button onClick={handleAgreeWithCarts} className={css['button-agree']} disabled={cartItems.length === 0}>Agree with carts</button>
     </div>
   );
 }

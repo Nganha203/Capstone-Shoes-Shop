@@ -7,6 +7,7 @@ interface CartContextType {
   cartQuantityDetail: number;
   cartItems: IProduct[];
   userEmail: string;
+  setCartQuantityDetail: (quantity: number) => void;
   addToCart: (item: IProduct) => void;
   updateCartItemQuantity: (productId: number, change: number) => void;
   updateQuantityDetail: (productId: number, change: number) => void;
@@ -41,13 +42,13 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     const existingItemIndex = cartItems.findIndex(cartItem => cartItem.id === item.id)
     if (existingItemIndex !== -1) {
       const updatedCartItems = [...cartItems];
-      updatedCartItems[existingItemIndex] = { ...cartItems[existingItemIndex], quantity: cartItems[existingItemIndex].quantity + 1 };
+      updatedCartItems[existingItemIndex] = { ...cartItems[existingItemIndex], quantity: cartItems[existingItemIndex].quantity + cartQuantityDetail };
       setCartItem(updatedCartItems);
-      setCartQuantityDetail(cartQuantityDetail + 1)
 
     } else {
       setCartItem([...cartItems, { ...item, quantity: cartQuantityDetail }]);
     }
+    setCartQuantityDetail(1)
     saveCartToLocalStorage(userEmail, cartItems)
   };
   // Cập nhật số lượng sản phẩm khi nhấn nút tăng giảm trong CARTS
@@ -71,11 +72,10 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
       if (idProduct === item.id) {
         const newQuantity = item.quantity + currentQuantity
         return { ...item, quantity: newQuantity }
+        
       }
       return item
     })
-
-    setCartItem(updatedCartItems);
     setCartQuantityDetail(cartQuantityDetail + currentQuantity);
     saveCartToLocalStorage(userEmail, updatedCartItems)
   }
@@ -135,6 +135,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     cartQuantityDetail,
     cartItems,
     userEmail,
+    setCartQuantityDetail,
     addToCart,
     updateCartItemQuantity,
     updateQuantityDetail,

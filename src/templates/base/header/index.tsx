@@ -9,19 +9,16 @@ import { getLocalStorage } from 'src/utils'
 
 export default function Header() {
   const { cartItems, userEmail, handleLogout, handldeLogin } = useCartContext();
-  const [total, setTotal] = useState(0);
-
+  const totalQuantity = useMemo(() => cartItems.reduce((total, item) => total + item.quantity, 0), [cartItems]);
+  
   const tokenLogin = getLocalStorage('accessToken')
 
   const navigate = useNavigate();
-
-  const totalQuantity = useMemo(() => cartItems.reduce((total, item) => total + item.quantity, 0), [cartItems]);
 
   const handleCartClick = () => {
     if (tokenLogin) {
       navigate(NAVIGATE_URL.carts);
       handldeLogin();
-      setTotal(totalQuantity)
     } else {
       navigate(NAVIGATE_URL.login);
     }
@@ -29,7 +26,11 @@ export default function Header() {
   const handleLogoutClick = () => {
     handleLogout();
     navigate(NAVIGATE_URL.home);
-    setTotal(0)
+  
+  };
+  const handleEmail = () => {
+    navigate(NAVIGATE_URL.profile);
+    
   };
 
 
@@ -39,7 +40,7 @@ export default function Header() {
         <Link to='/'><img src={logoImg} alt="" /></Link>
 
         <div className={css['header-left']}>
-          <div>{userEmail}</div>
+          <div onClick={handleEmail} style={{cursor: 'pointer'}}>{userEmail}</div>
           <div className={css['icon-search']}>
             <Link to='/search'><IconSearch /></Link>
             <Link to='/search'><span style={{ color: 'white' }}>Search</span></Link>
