@@ -1,0 +1,1 @@
+import{j as r}from"./index-4920cf17.js";import{C as a}from"./product.service-e4bc78b8.js";const i={"list-card":"_list-card_uqwpu_1"};function o(t){return r.jsx("div",{className:i["list-card"],children:t.list.map(s=>r.jsx(a,{data:s},s.id))})}export{o as L};
