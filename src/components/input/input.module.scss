@@ -1,6 +1,4 @@
-.container{
-    margin: 0 2rem;
-}
+
 .input-search{
     font-size: 2rem;
     padding: 1.5rem 1.5rem;
@@ -18,11 +16,7 @@
     color: white;
     background-color: black;
 }
-.list-card{
-    margin: 5rem 0;
-    display: flex;
-    flex-wrap: wrap; 
-}
+
 .button-sort{
     display: flex;
     text-align: end;
@@ -37,4 +31,24 @@
 .button-asc:active,.button-desc:active{
     background-color: black;
     color: white;
+}
+.list-card{
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+
+    @media screen and (max-width:992px) {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    @media screen and (max-width:768px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media screen and (max-width:576px) {
+        grid-template-columns: repeat(1, 1fr);
+    }
 }

@@ -50,8 +50,8 @@ const HomeCarousel: React.FC = () => {
                 </Carousel>
             </div>
             <div style={{ textAlign: 'center', marginTop: '20px' }}>
-                <button style={{border : 'none', backgroundColor: 'white', color: 'green'}} onClick={handlePrev}><NextIcon ></NextIcon></button>
-                <button style={{border : 'none', backgroundColor: 'white'}} onClick={handleNext}><PreviousIcon></PreviousIcon> </button>
+                <button style={{border : 'none', backgroundColor: 'white', cursor: 'pointer'}} onClick={handlePrev}><NextIcon ></NextIcon></button>
+                <button style={{border : 'none', backgroundColor: 'white', cursor: 'pointer'}} onClick={handleNext}><PreviousIcon></PreviousIcon> </button>
             </div>
 
 

@@ -43,13 +43,12 @@ export function Card(props: Props) {
     if (tokenLogin) {
       navigate(`/detail/${id}`);
     } else {
-      // Hiện thông báo xác nhận (đây chỉ là ví dụ sử dụng window.confirm, bạn có thể sử dụng thư viện UI khác nếu muốn)
+      
       if (
         window.confirm(
           "Bạn cần đăng nhập để mua sản phẩm này. Bạn có muốn đăng nhập ngay?",
         )
       ) {
-        // Giả định '/login' là URL trang đăng nhập
         navigate("/login");
       }
     }
@@ -80,10 +79,10 @@ export function Card(props: Props) {
           >
             Buy
           </div>
-          {/* <Link className={css['action-buy']} to={`/detail/${data.id}`}>Buy</Link> */}
-          <Link className={css["action-price"]} to={`/detail/${data.id}`}>
+
+          <div className={css["action-price"]}>
             {data.price}$
-          </Link>
+          </div>
         </div>
       </div>
   );
