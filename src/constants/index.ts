@@ -41,7 +41,7 @@ export enum VALIDATION_MESSAGE {
     emailFormat = 'Email không đúng định dạng.',
     emailRequire = 'Email không được bỏ trống.',
     nameRequire = 'Bắt buộc phải nhập vào name',
-    passwordConfirmMatch = "Passwords must match",
+    passwordConfirmMatch = "Mật khẩu nhập lại không trùng với mật khẩu",
     passwordConfirmRequire = "Bắt buộc phải nhập vào confirm password.",
     phoneFormat = "Số điện thoại không đúng định dạng",
     phoneRequire = "Số điện thoại không được bỏ trống."
