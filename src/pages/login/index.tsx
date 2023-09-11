@@ -101,7 +101,7 @@ export default function Login() {
             <FacebookLogin
               appId="963495338437666"
               fields="name,email,picture"
-              render={(renderProps) => (
+              render={(renderProps:any) => (
                 <button
                   onClick={renderProps.onClick}
                   type="button"

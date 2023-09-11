@@ -9,7 +9,7 @@ export const userLogin = async (data: { email: string; password: string }) => {
             data,
         });
         return resp.data;
-    } catch (error) {   
+    } catch (error:any) {   
         console.log(error)
         return error.response.data.message;
     }
@@ -22,7 +22,7 @@ export const signup = async (data: UserRegister) => {
             data,
         });
         return resp.data;
-    } catch (err) {
+    } catch (err:any) {
         console.log(err)
         return err.response.data.message;
     }
